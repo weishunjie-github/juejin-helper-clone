@@ -246,7 +246,7 @@ class CheckIn {
     this.growthTask = new GrowthTask(juejin);
     this.dipLuckyTask = new DipLuckyTask(juejin);
     this.lotteriesTask = new LotteriesTask(juejin);
-    this.bugfixTask = new BugfixTask(juejin);
+    // this.bugfixTask = new BugfixTask(juejin);
     this.sdkTask = new SdkTask(juejin);
     this.mockVisitTask = new MockVisitTask(juejin);
 
@@ -258,8 +258,8 @@ class CheckIn {
     await this.dipLuckyTask.run();
     console.log(`运行 ${this.lotteriesTask.taskName}`);
     await this.lotteriesTask.run(this.growthTask, this.dipLuckyTask);
-    console.log(`运行 ${this.bugfixTask.taskName}`);
-    await this.bugfixTask.run();
+    // console.log(`运行 ${this.bugfixTask.taskName}`);
+    // await this.bugfixTask.run();
     await juejin.logout();
     console.log("-------------------------");
   }
@@ -292,11 +292,12 @@ ${
   }[this.dipLuckyTask.dipStatus]
 }
 ${
-  this.bugfixTask.bugStatus === 1
-    ? this.bugfixTask.collectBugCount > 0
-      ? `收集Bug +${this.bugfixTask.collectBugCount}`
-      : "没有可收集Bug"
-    : "收集Bug失败"
+  // this.bugfixTask.bugStatus === 1
+  //   ? this.bugfixTask.collectBugCount > 0
+  //     ? `收集Bug +${this.bugfixTask.collectBugCount}`
+  //     : "没有可收集Bug"
+  //   : "收集Bug失败"
+  1
 }
 连续签到天数 ${this.growthTask.contCount}
 累计签到天数 ${this.growthTask.sumCount}
