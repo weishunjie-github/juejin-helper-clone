@@ -138,7 +138,7 @@ class LotteriesTask extends Task {
       for (let i = 0, length = Math.floor(totalDrawsNumber * 0.65); i < length; i++) {
         supplyPoint += Math.ceil(Math.random() * 100);
       }
-      const luckyValue = ((sumPoint + supplyPoint) / pointCost) * luckyValueCost + dipLuckyTask.luckyValue;
+      const luckyValue = ((sumPoint + supplyPoint) / pointCost) * luckyValueCost + dipLuckyTask.luckyValue ? dipLuckyTask.luckyValue : 0;
       return luckyValue / 6000;
     };
 
