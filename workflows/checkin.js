@@ -244,7 +244,7 @@ class CheckIn {
     this.username = juejin.getUser().user_name;
 
     this.growthTask = new GrowthTask(juejin);
-    this.dipLuckyTask = new DipLuckyTask(juejin);
+    // this.dipLuckyTask = new DipLuckyTask(juejin);
     this.lotteriesTask = new LotteriesTask(juejin);
     // this.bugfixTask = new BugfixTask(juejin);
     this.sdkTask = new SdkTask(juejin);
@@ -254,10 +254,10 @@ class CheckIn {
     await this.sdkTask.run();
     console.log(`运行 ${this.growthTask.taskName}`);
     await this.growthTask.run();
-    console.log(`运行 ${this.dipLuckyTask.taskName}`);
-    await this.dipLuckyTask.run();
+    // console.log(`运行 ${this.dipLuckyTask.taskName}`);
+    // await this.dipLuckyTask.run();
     console.log(`运行 ${this.lotteriesTask.taskName}`);
-    await this.lotteriesTask.run(this.growthTask, this.dipLuckyTask);
+    await this.lotteriesTask.run(this.growthTask);
     // console.log(`运行 ${this.bugfixTask.taskName}`);
     // await this.bugfixTask.run();
     await juejin.logout();
@@ -285,11 +285,12 @@ ${
   }[this.growthTask.todayStatus]
 }
 ${
-  {
-    0: "沾喜气失败",
-    1: `沾喜气 +${this.dipLuckyTask.dipValue} 幸运值`,
-    2: "今日已经沾过喜气"
-  }[this.dipLuckyTask.dipStatus]
+  // {
+  //   0: "沾喜气失败",
+  //   1: `沾喜气 +${this.dipLuckyTask.dipValue} 幸运值`,
+  //   2: "今日已经沾过喜气"
+  // }[this.dipLuckyTask.dipStatus]
+  '不沾喜气'
 }
 ${
   // this.bugfixTask.bugStatus === 1
