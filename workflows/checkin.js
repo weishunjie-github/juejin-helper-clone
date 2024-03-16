@@ -122,7 +122,7 @@ class LotteriesTask extends Task {
     while (freeCount > 0) {
       const result = await growth.drawLottery();
       this.drawLotteryHistory[result.lottery_id] = (this.drawLotteryHistory[result.lottery_id] || 0) + 1;
-      dipLuckyTask.luckyValue = result.total_lucky_value;
+      dipLuckyTask?.luckyValue ? dipLuckyTask?.luckyValue = result.total_lucky_value : dipLuckyTask?.luckyValue=0
       freeCount--;
       this.lotteryCount++;
       await utils.wait(utils.randomRangeNumber(300, 1000));
