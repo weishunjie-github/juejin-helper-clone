@@ -56,17 +56,17 @@ class DipLuckyTask extends Task {
   async run() {
     const growth = this.juejin.growth();
 
-    const luckyusersResult = await growth.getLotteriesLuckyUsers();
-    if (luckyusersResult.count > 0) {
-      const no1LuckyUser = luckyusersResult.lotteries[0];
-      const dipLuckyResult = await growth.dipLucky(no1LuckyUser.history_id);
-      if (dipLuckyResult.has_dip) {
-        this.dipStatus = 2;
-      } else {
-        this.dipStatus = 1;
-        this.dipValue = dipLuckyResult.dip_value;
-      }
-    }
+    // const luckyusersResult = await growth.getLotteriesLuckyUsers();
+    // if (luckyusersResult.count > 0) {
+    //   const no1LuckyUser = luckyusersResult.lotteries[0];
+    //   const dipLuckyResult = await growth.dipLucky(no1LuckyUser.history_id);
+    //   if (dipLuckyResult.has_dip) {
+    //     this.dipStatus = 2;
+    //   } else {
+    //     this.dipStatus = 1;
+    //     this.dipValue = dipLuckyResult.dip_value;
+    //   }
+    // }
 
     const luckyResult = await growth.getMyLucky();
     this.luckyValue = luckyResult.total_value;
@@ -122,7 +122,7 @@ class LotteriesTask extends Task {
     while (freeCount > 0) {
       const result = await growth.drawLottery();
       this.drawLotteryHistory[result.lottery_id] = (this.drawLotteryHistory[result.lottery_id] || 0) + 1;
-      // dipLuckyTask.luckyValue = result.total_lucky_value;
+      dipLuckyTask.luckyValue = result.total_lucky_value;
       freeCount--;
       this.lotteryCount++;
       await utils.wait(utils.randomRangeNumber(300, 1000));
@@ -138,7 +138,7 @@ class LotteriesTask extends Task {
       for (let i = 0, length = Math.floor(totalDrawsNumber * 0.65); i < length; i++) {
         supplyPoint += Math.ceil(Math.random() * 100);
       }
-      const luckyValue = ((sumPoint + supplyPoint) / pointCost) * luckyValueCost ;
+      const luckyValue = ((sumPoint + supplyPoint) / pointCost) * luckyValueCost + dipLuckyTask.luckyValue;
       return luckyValue / 6000;
     };
 
@@ -244,7 +244,7 @@ class CheckIn {
     this.username = juejin.getUser().user_name;
 
     this.growthTask = new GrowthTask(juejin);
-    // this.dipLuckyTask = new DipLuckyTask(juejin);
+    this.dipLuckyTask = new DipLuckyTask(juejin);
     this.lotteriesTask = new LotteriesTask(juejin);
     // this.bugfixTask = new BugfixTask(juejin);
     this.sdkTask = new SdkTask(juejin);
@@ -254,10 +254,10 @@ class CheckIn {
     await this.sdkTask.run();
     console.log(`运行 ${this.growthTask.taskName}`);
     await this.growthTask.run();
-    // console.log(`运行 ${this.dipLuckyTask.taskName}`);
-    // await this.dipLuckyTask.run();
+    console.log(`运行 ${this.dipLuckyTask.taskName}`);
+    await this.dipLuckyTask.run();
     console.log(`运行 ${this.lotteriesTask.taskName}`);
-    await this.lotteriesTask.run(this.growthTask);
+    await this.lotteriesTask.run(this.growthTask, this.dipLuckyTask);
     // console.log(`运行 ${this.bugfixTask.taskName}`);
     // await this.bugfixTask.run();
     await juejin.logout();
@@ -289,8 +289,8 @@ ${
   //   0: "沾喜气失败",
   //   1: `沾喜气 +${this.dipLuckyTask.dipValue} 幸运值`,
   //   2: "今日已经沾过喜气"
-  // }[this.dipLuckyTask.dipStatus]
-  '不沾喜气'
+  // }
+  [this.dipLuckyTask.dipStatus]
 }
 ${
   // this.bugfixTask.bugStatus === 1
